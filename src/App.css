@@ -1,3 +1,7 @@
+*{
+  font-family: sans-serif;
+}
+
 .connect_btn{
   padding: 10px;
   background: #4e4e98;
@@ -9,4 +13,27 @@
 
 .connect_btn:hover{
   cursor: pointer;
+}
+
+.detail-box{
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 5px;
+  width: fit-content;
+  box-shadow: 1px 1px 9px 0px #2624245e;
+}
+
+.detail-box p {
+  margin: 0;
+}
+
+.left-block{
+  /* padding-right: 10px; */
+}
+
+.detail-box .left-block:after{
+  content: "";
+  border-left: 2px solid black;
+  margin: 10px;
 }

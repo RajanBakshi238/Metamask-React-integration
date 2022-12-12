@@ -1,24 +1,32 @@
 import { useEffect, useState } from "react";
-import { useWeb3React } from "@web3-react/core"
-import { InjectedConnector } from '@web3-react/injected-connector'
+import { useWeb3React } from "@web3-react/core";
+import { InjectedConnector } from "@web3-react/injected-connector";
 import Web3 from "web3";
 
 import "./App.css";
 
 function App() {
-  const { active, account, library, connector, activate, deactivate } = useWeb3React()
+  const { active, account, library, connector, activate, deactivate } =
+    useWeb3React();
 
   const injected = new InjectedConnector({
     supportedChainIds: [56],
-  })
+  });
 
-  console.log(active, '>>>>>>>>>>>>>>>>>>>>>>')
+  console.log(active, ">>>>>>>>>>>>>>>>>>>>>>");
   useEffect(() => {
-    console.log(active)
-    console.log(account)
-    console.log(library)
-    console.log(connector)
-  }, [account, active, library, connector])
+    console.log(active);
+    console.log(account);
+    console.log(library);
+    console.log(connector, ".........");
+  }, [account, active, library, connector]);
+
+  useEffect(() => {
+    if (!active) {
+      const testRes = connector?.handleChainChanged(56)
+      console.log(testRes, "tesRes");
+    }
+  }, [connector]);
 
   const connectWallet = async () => {
     if (window.ethereum) {
@@ -91,22 +99,28 @@ function App() {
   };
 
   const connectWallet2 = async () => {
-    await window.ethereum.request({  method: 'eth_requestAccounts' })
-    .then(async (accounts) => {
-      console.log(accounts, '>>>>>>>>>>>ConnectWallet2')
-      console.log(await activate(injected));
-    })
-    .catch(( err) => {
-      // Already processing request 
-      if(err.code === -32002){
-        console.log(err.message)
-      }
-      console.log(err, '>>>>>>>>>>>ConnectWallet2')
-    })
-  }
-
-  
-
+    await window.ethereum
+      .request({ method: "eth_requestAccounts" })
+      .then(async (accounts) => {
+        console.log(accounts, ">>>>>>>>>>>ConnectWallet2");
+        const response = await activate(injected);
+        console.log(response, "reponse");
+        if (active) {
+          console.log("AT RIGHT PLACE");
+        } else {
+          console.log("not at right place");
+          // const testRes = connector.handleChainChanged(56);
+          // console.log(testRes, 'tesRes')
+        }
+      })
+      .catch((err) => {
+        // Already processing request
+        if (err.code === -32002) {
+          console.log(err.message);
+        }
+        console.log(err, ">>>>>>>>>>>ConnectWallet2");
+      });
+  };
 
   return (
     <div className="app">
